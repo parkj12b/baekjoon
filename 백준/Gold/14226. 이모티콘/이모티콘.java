@@ -11,7 +11,7 @@ public class Main {
         StringTokenizer st;
         
         int S = Integer.parseInt(br.readLine());
-        int[][] visit = new int[1100][1100];
+        int[][] visit = new int[1001][1001];
         int minAction = 0;
         Deque<Pair> queue = new ArrayDeque<Pair>();
 
@@ -22,7 +22,7 @@ public class Main {
                 Pair p = queue.pollFirst();
                 int input = p.input;
                 int clipboard = p.clipboard;
-                if(input > 1099 || input < 0 || clipboard < 0 || clipboard > 1099 || visit[input][clipboard] == 1){
+                if(input > 1000 || input < 0 || clipboard < 0 || clipboard > 1000 || visit[input][clipboard] == 1){
                     continue;
                 }
                 if(input == S){
