@@ -22,61 +22,58 @@ public class Main {
         for(int i = 0; i < N; i++){
             map[i] = Arrays.stream(br.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
         }
-        for(int i = 0; i < R; i++){
-            spin();
+        
+        int[][] tempMap = new int[map.length][map[0].length];
+        for(int i = 0; i < Math.min(N,M)/2; i++){
+            LinkedList<Integer> l = new LinkedList<>();
+            for(int a= i; a < N-i; a++){
+                l.add(map[a][i]);
+            }
+            for(int b=i+1; b < M-i; b++){
+                l.add(map[N-i-1][b]);
+            }
+            for(int c=N-i-2; c >= i; c--){
+                l.add(map[c][M-i-1]);
+            }
+            for(int d = M-i-2; d > i; d--){
+                l.add(map[i][d]);
+            }
+            // for(int j = 0; j <l.size(); j++){
+            //     System.out.print(l.get(j)+" ");
+            // }
+            int size = l.size();
+            int index = (size - R % size) % size;
+            for(int a= i; a < N-i; a++){
+                tempMap[a][i] = l.get(index);
+                index++;
+                index %= size;
+            }
+            for(int b=i+1; b < M-i; b++){
+                tempMap[N-i-1][b] = l.get(index);
+                index++;
+                index %= size;
+            }
+            for(int c=N-i-2; c >= i; c--){
+                tempMap[c][M-i-1] = l.get(index);
+                index++;
+                index %= size;
+            }
+            for(int d = M-i-2; d > i; d--){
+                tempMap[i][d] = l.get(index);
+                index++;
+                index %= size;
+            }
         }
-
+        
         for(int i = 0; i < N; i++){
             for(int j = 0; j < M; j++){
-                bw.write(map[i][j]+" ");
+                bw.write(tempMap[i][j]+" ");
             }
             bw.write("\n");
-        }
+        }        
         bw.flush();
+        
     }
 
-    static void spin(){
-        int direction = 0;
-        Deque<Pair> queue = new ArrayDeque<>();
-        int[][] tempMap = new int[map.length][map[0].length];
-
-        for(int i = 0; i < map.length; i++){
-            tempMap[i] = map[i].clone();
-        }
-
-        for(int i = 0; i < Math.min(N,M)/2; i++){
-            queue.addLast(new Pair(i,i));
-            direction = 0;
-            while(true){
-                Pair spot = queue.pollFirst();
-                int curY = spot.y;
-                int curX = spot.x;
-
-                
-                int nextY = curY + dy[direction];
-                int nextX = curX + dx[direction];
-                
-                if(nextY < 0+i || nextY >= N-i || nextX < 0+i || nextX >= M-i){
-                    direction++;
-                    queue.add(new Pair(curY, curX));
-                    continue;
-                }
-                
-                tempMap[nextY][nextX] = map[curY][curX];
-                if(nextY == i && nextX == i){
-                    break;
-                }
-                queue.add(new Pair(nextY, nextX));
-            }
-        }
-        map = tempMap;
-    }
-
-    static class Pair{
-        int y,x;
-        Pair(int y, int x){
-            this.y = y;
-            this.x = x;
-        }
-    }
+    
 }
