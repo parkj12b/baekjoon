@@ -14,24 +14,12 @@ public class Main {
         int N = Integer.parseInt(br.readLine());
         int answer = 0;
         prime = new boolean[4000001];
-        for(int i = 2; i <= 4000000; i++){
+        for(int i = 2; i*i <= 4000000; i++){
             boolean isPrime = true;
             if(prime[i]){
                 continue;
             }
-            for(int j = 2; j*j <= i; j++){
-                if(i% j == 0){
-                    isPrime = false;
-                    break;
-                }
-            }
-            if(isPrime){
-                int counter = 2*i;
-                while(counter <= 4000000){
-                    prime[counter] = true;
-                    counter += i;
-                }
-            }
+            for(int j=i*i; j <= 4000000; j+=i) prime[j]=true;
         }
         int counter = 0;
         ArrayList<Integer> primeList  = new ArrayList<>();
