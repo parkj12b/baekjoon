@@ -53,8 +53,7 @@ public class Main {
         queue.add(1);
         visit[1] = true;
         // orderQueue.poll();
-
-        while(!queue.isEmpty()){
+        esc: while(!queue.isEmpty()){
             for(int i = 0, length = queue.size(); i < length; i++){
                 int num = queue.poll();
 
@@ -66,6 +65,9 @@ public class Main {
                         if(visit[nextNum]) continue;
                         visit[nextNum] = true;
                         queue.add(nextNum);
+                    }
+                    if(orderQueue.isEmpty()){
+                        break esc;
                     }
                 }
             }
