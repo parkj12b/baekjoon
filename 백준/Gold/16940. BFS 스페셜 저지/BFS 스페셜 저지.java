@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    static ArrayList<HashSet<Integer>> map = new ArrayList<>();
+    static ArrayList<ArrayList<Integer>> map = new ArrayList<>();
 
     public static void main(String[] args) throws IOException {
 
@@ -14,19 +14,19 @@ public class Main {
 
         boolean[] visit = new boolean[N + 1];
 
+        
         for (int i = 0; i <= N; i++) {
-            map.add(new HashSet<>());
+            map.add(new ArrayList<>());
         }
-
         for (int i = 0; i < N - 1; i++) {
             st = new StringTokenizer(br.readLine());
-
+            
             int a = Integer.parseInt(st.nextToken());
             int b = Integer.parseInt(st.nextToken());
-
+            
             map.get(a).add(b);
             map.get(b).add(a);
-
+            
         }
         Queue<Integer> orderQueue = new LinkedList<>();
         Queue<Integer> queue = new LinkedList<>();
@@ -35,40 +35,42 @@ public class Main {
         for (int i = 1; i <= N; i++) {
             int num = Integer.parseInt(st.nextToken());
             orderQueue.add(num);
+            arr[num] = i;
         }
+        for(int i = 1; i <= N; i++){
+            Collections.sort(map.get(i), (a,b)->{
+                return arr[a] - arr[b];
+            });
+        }
+        
+        // for(int i = 1; i <=N; i++){
+        //     for(int num : map.get(i)){
+        //         System.out.print(num + " ");
+        //     }
+        //     System.out.println();
+        // }
 
-        boolean isGood = true;
-        orderQueue.poll();
-        visit[1] = true;
         queue.add(1);
+        visit[1] = true;
+        // orderQueue.poll();
 
         while(!queue.isEmpty()){
-            int num = queue.poll();
+            for(int i = 0, length = queue.size(); i < length; i++){
+                int num = queue.poll();
 
-            HashSet<Integer> list = new HashSet<>(map.get(num));
-            ArrayList<Integer> newList = new ArrayList<>(list);
-            for(int j = 0; j < newList.size(); j++){
-                int temp = newList.get(j);
+                if(num == orderQueue.peek()){
+                    orderQueue.poll();
+                    ArrayList<Integer> list = map.get(num);
 
-                if(visit[temp]){
-                    list.remove(Integer.valueOf(temp));
+                    for(int nextNum : list){
+                        if(visit[nextNum]) continue;
+                        visit[nextNum] = true;
+                        queue.add(nextNum);
+                    }
                 }
-            }
-            for(int i = 0; i < list.size(); i++){
-                int temp = orderQueue.poll();
-                queue.add(temp);
-                if(list.contains(temp)){
-                    list.remove(Integer.valueOf(temp));
-                    i--;
-                }
-                visit[temp] = true;
-            }
-            if(!list.isEmpty()){
-                isGood = false;
-                break;
             }
         }
-        if(isGood){
+        if(orderQueue.isEmpty()){
             System.out.println(1);
         } else {
             System.out.println(0);
