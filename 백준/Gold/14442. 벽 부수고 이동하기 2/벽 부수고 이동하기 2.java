@@ -17,10 +17,11 @@ public class Main {
         int K = Integer.parseInt(st.nextToken());
 
         int[][] map = new int[N][M];
-        boolean[][][] visit = new boolean[N][M][K+1];
+        int[][] visit = new int[N][M];
 
         for(int i = 0; i < N; i++){
             map[i] = Arrays.stream(br.readLine().split("")).mapToInt(Integer::parseInt).toArray();
+            Arrays.fill(visit[i], -1);
         }
 
         int depth = 2;
@@ -48,8 +49,8 @@ public class Main {
                         newWall--;
                         if(newWall < 0) continue;
                     }
-                    if(visit[newY][newX][newWall]) continue;
-                    visit[newY][newX][newWall] = true;
+                    if(visit[newY][newX] >= newWall) continue;
+                    visit[newY][newX] = newWall;
                     queue.add(new Pair(newY, newX, newWall));
                 }
             }
