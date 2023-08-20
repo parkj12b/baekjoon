@@ -10,14 +10,14 @@ int main(){
 	int top = 0;
 	bool isGood = true;
 	
-	s = (char *)malloc(sizeof(char)*101);
-	stack = (char*)malloc(sizeof(char)*101);
+	s = (char *)malloc(sizeof(char)*102);
+	stack = (char*)malloc(sizeof(char)*102);
 
-	scanf("%[^\n]", s);
+	fgets(s, 102, stdin);
 	while(true){
 		top = 0;
 		isGood = true;
-		if(strcmp(s,".") == 0){
+		if(strcmp(s,".\n")==0){
 			break;
 		}
 		for(int i = 0, length = strlen(s); i < length; i++){
@@ -44,8 +44,7 @@ int main(){
 			printf("no\n");
 		}
 
-		getchar();
-		scanf("%[^\n]", s);
+		fgets(s, 102, stdin);
 	}
 	free(s);
 	free(stack);
